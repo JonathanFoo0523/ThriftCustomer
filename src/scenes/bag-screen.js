@@ -25,7 +25,8 @@ export const BagScreen = ({navigation, route}) => {
   const orderRef = firestore()
     .collection('orders')
     .where('itemId', '==', itemParam.id)
-    .where('userId', '==', userId);
+    .where('userId', '==', userId)
+    .orderBy('time', 'desc');
   const businessRef = firestore()
     .collection('business')
     .doc(itemParam.businessId);
@@ -42,9 +43,10 @@ export const BagScreen = ({navigation, route}) => {
       item.collection.to = item.collection.to.toDate();
       item.business.address.coordinate =
         item.business.address.coordinate.toJSON();
-      const userOrder = await orderRef.get();
 
-      if (userOrder.size != 0) {
+      const userOrder = await orderRef.get();
+      
+      if (userOrder.size !== 0 && userOrder.docs[0].data().status !== 'OX') {
         setButtonState('ordered');
         setOrderId(userOrder.docs[0].id);
       } else if (item.quantity - item.ordered === 0) {
@@ -204,8 +206,6 @@ function onSubmitOrder(itemId, userId) {
   return firestore().runTransaction(async transaction => {
     const item = await (await transaction.get(itemRef)).data();
 
-    console.log(item);
-
     if (item.quantity - item.ordered < 1) {
       throw 'Item Sold Out';
     }
@@ -213,8 +213,6 @@ function onSubmitOrder(itemId, userId) {
     transaction.update(itemRef, {
       ordered: item.ordered + 1,
     });
-
-    console.log('incremented');
 
     await transaction.set(newOrderRef, {
       itemId: itemId,

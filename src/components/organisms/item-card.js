@@ -14,10 +14,11 @@ import {pickupTimeDescription} from '../../utils/date-time-formater';
 
 export const ItemCard = ({item}) => {
   const navigation = useNavigation();
+  const itemRemaining = item.quantity - item.ordered
 
   return (
     <TouchableOpacity
-      style={styles.container}
+      style={[styles.container,{opacity: itemRemaining ? 1.0 : 0.6}]}
       onPress={() =>
         navigation.navigate('BagDetail', {
           item: item,
@@ -31,11 +32,24 @@ export const ItemCard = ({item}) => {
         <LinearGradient
           colors={['rgba(0, 0, 0, 0.6)', 'rgba(0, 0, 0, 0.0)']}
           style={styles.gradientOverlay}>
-          <View>
-            <Text style={styles.businessCategoryText}>
-              {item.business.category}
-            </Text>
-            <Text style={styles.businessNameText}>{item.business.name}</Text>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <View>
+              <Text style={styles.businessCategoryText}>
+                {item.business.category}
+              </Text>
+              <Text style={styles.businessNameText}>{item.business.name}</Text>
+            </View>
+            <View style={{justifyContent: 'center'}}>
+              {!itemRemaining ? (
+                <View style={{backgroundColor: 'darkgray', borderRadius: 15}}>
+                  <Text style={{fontWeight: 'bold', fontSize: 15, padding: 5}}>
+                    Sold Out
+                  </Text>
+                </View>
+              ) : (
+                <></>
+              )}
+            </View>
           </View>
         </LinearGradient>
       </ImageBackground>

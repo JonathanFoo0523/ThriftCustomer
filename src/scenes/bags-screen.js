@@ -7,7 +7,9 @@ import {ItemCardSkeleton} from '../components/organisms/item-card-skeleton';
 
 export function BagsScreen() {
   const businessRef = firestore().collection('business');
-  const itemsRef = firestore().collection('items');
+  const itemsRef = firestore()
+    .collection('items')
+    .where('collection.to', '>', firestore.Timestamp.fromDate(new Date()));
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -60,7 +62,7 @@ const BagsListPlaceholder = () => (
   <FlatList
     data={[0, 1, 2, 3, 4]}
     renderItem={ItemCardSkeleton}
-    keyExtractor={item => item.id}
+    keyExtractor={item => item}
     style={{flex: 1, width: '100%'}}
     contentContainerStyle={{justifyContent: 'center'}}
     scrollEnabled={false}

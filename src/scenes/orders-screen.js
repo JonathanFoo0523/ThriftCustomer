@@ -68,7 +68,6 @@ export function OrdersScreen({route}) {
     }
 
     if (index != -1 && orders.length > 0 && flatListRef.current) {
-      console.log(flatListRef);
       flatListRef.current.scrollToIndex({
         animated: true,
         index: index,
@@ -98,7 +97,7 @@ const OrdersListPlaceholder = () => (
   <FlatList
     data={[0, 1]}
     renderItem={OrderCardSkeleton}
-    keyExtractor={item => item.id}
+    keyExtractor={item => item}
     style={{flex: 1, width: '100%'}}
     contentContainerStyle={{justifyContent: 'center'}}
     scrollEnabled={false}
