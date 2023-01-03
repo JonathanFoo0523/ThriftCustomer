@@ -21,29 +21,27 @@ export const pickupTimeDescription = (from, to) => {
       ? 'Today'
       : from.getDate() + ' ' + monthShorthands[from.getMonth()];
 
-  const fromAmPm = from.getHours() < 12 ? 'AM' : 'PM';
-  const toAmPm = to.getHours() < 12 ? 'AM' : 'PM';
-
-  const from12H = pad(
-    from.getHours() < 13 ? from.getHours() : from.getHours() - 12,
-    2,
-  );
-  const to12H = pad(to.getHours() < 13 ? to.getHours() : to.getHours() - 12, 2);
-
   return (
     dateDesciption +
     ' • ' +
-    from12H +
-    ':' +
-    pad(from.getMinutes(), 2) +
-    fromAmPm +
+    amPmTimeDescription(from) +
     ' - ' +
-    to12H +
-    ':' +
-    pad(to.getMinutes(), 2) +
-    toAmPm
+    amPmTimeDescription(to)
   );
 };
+
+export function amPmTimeDescription(dateTime) {
+  const amPm = dateTime.getHours() < 12 ? 'AM' : 'PM';
+
+  const hours = pad(
+    dateTime.getHours() < 13 ? dateTime.getHours() : dateTime.getHours() - 12,
+    2,
+  );
+
+  const mins = pad(dateTime.getMinutes(), 2);
+
+  return hours + ':' + mins + amPm;
+}
 
 export const pad = (num, size) => {
   num = num.toString();

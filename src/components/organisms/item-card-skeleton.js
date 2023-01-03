@@ -1,8 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
-import {useNavigation} from '@react-navigation/native';
-
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 export const ItemCardSkeleton = ({item}) => {

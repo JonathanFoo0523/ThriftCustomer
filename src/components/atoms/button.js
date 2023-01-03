@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
-export const Button = ({color, size, role, text, style, onPress}) => {
+export const Button = ({color, size, role, text, style, onPress, ...props}) => {
   const styles = StyleSheet.create({
     container: {
       alignItems: 'center',
@@ -51,7 +51,8 @@ export const Button = ({color, size, role, text, style, onPress}) => {
                   ? color + '50'
                   : color,
             },
-      ]}>
+      ]}
+      {...props}>
       {activityIndicator}
       <Text
         style={[

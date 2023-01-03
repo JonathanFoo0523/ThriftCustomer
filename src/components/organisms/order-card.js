@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet, Alert} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MapView, {Marker} from 'react-native-maps';
 
@@ -13,6 +13,7 @@ import {
 } from '../../utils/date-time-formater';
 
 import firestore from '@react-native-firebase/firestore';
+import {useForceUpdate} from '../../utils/force-update-hook';
 
 export const OrderCard = ({order}) => {
   return (
@@ -89,6 +90,7 @@ export const OrderCard = ({order}) => {
           status={order.status}
           orderId={order.id}
           itemId={order.item.id}
+          collectionFrom={order.item.from}
         />
       </View>
     </View>
@@ -120,17 +122,37 @@ const TitleDescription = ({style, title, description}) => {
   );
 };
 
-const OrderActionButton = ({status, orderId, itemId}) => {
+const OrderActionButton = ({status, orderId, itemId, collectionFrom}) => {
+  const forceUpdate = useForceUpdate();
+
   switch (status) {
     case 'O':
     case 'OO':
-      return (
+      return !timeExceedCollectionTimeBy(collectionFrom, 2) ? (
         <PressLoadingButton
           text="Cancel Order"
           size={17}
           color="#E54B4B"
           style={{width: '60%'}}
-          onPress={() => onCancelOrder(orderId, itemId)}
+          onPress={async () => {
+            try {
+              await onCancelOrder(orderId, itemId);
+            } catch (e) {
+              Alert.alert(e);
+              forceUpdate();
+            }
+          }}
+        />
+      ) : (
+        <Button
+          text="Cancel Order"
+          size={17}
+          color="#E54B4B50"
+          activeOpacity={1.0}
+          style={{width: '60%'}}
+          onPress={() =>
+            Alert.alert('Cannot cancel order 2 hours before collection start.')
+          }
         />
       );
     case 'OX':
@@ -158,6 +180,10 @@ const OrderActionButton = ({status, orderId, itemId}) => {
   }
 };
 
+function timeExceedCollectionTimeBy(collectionEpoch, hours) {
+  return Date.now() > collectionEpoch - 1000 * 60 * 60 * hours;
+}
+
 function onCancelOrder(orderId, itemId) {
   const orderRef = firestore().collection('orders').doc(orderId);
   const itemRef = firestore().collection('items').doc(itemId);
@@ -165,6 +191,12 @@ function onCancelOrder(orderId, itemId) {
   return firestore().runTransaction(async transaction => {
     const orderSnapshot = await transaction.get(orderRef);
     const itemSnapshot = await transaction.get(itemRef);
+
+    const collectionStartTime = itemSnapshot.data().collection.from.toDate();
+
+    if (timeExceedCollectionTimeBy(collectionStartTime, 2)) {
+      throw 'Cannot cancel order 2 hours before collection start.';
+    }
 
     transaction.update(orderRef, {
       status: 'OX',

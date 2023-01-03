@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import {FlatList} from 'react-native';
 import {ItemCard} from '../components/organisms/item-card';
 import firestore from '@react-native-firebase/firestore';
@@ -9,7 +9,7 @@ export function BagsScreen() {
   const businessRef = firestore().collection('business');
   const itemsRef = firestore()
     .collection('items')
-    .where('collection.to', '>', firestore.Timestamp.fromDate(new Date()));
+    .where('collection.to', '>', firestore.Timestamp.now());
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 

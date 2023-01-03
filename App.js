@@ -1,12 +1,14 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import {OrdersScreen} from './src/scenes/orders-screen';
 
-import {UserIdProvider} from './src/utils/current-user-context';
+import {UserIdProvider} from './src/utils/user-context-hook';
 import {BagsNavigator} from './src/navigations/bags-navigator';
+
+import {requestPermission} from './src/utils/notification';
 
 const MyTheme = {
   ...DefaultTheme,
@@ -20,6 +22,10 @@ const MyTheme = {
 const Tab = createBottomTabNavigator();
 
 const App = () => {
+  useEffect(() => {
+    requestPermission();
+  });
+
   return (
     <UserIdProvider>
       <NavigationContainer theme={MyTheme}>

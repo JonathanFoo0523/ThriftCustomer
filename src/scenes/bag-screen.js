@@ -16,7 +16,8 @@ import {Line} from '../components/atoms/line';
 import {Button} from '../components/atoms/button';
 import {pickupTimeDescription} from '../utils/date-time-formater';
 
-import {useUserId} from '../utils/current-user-context';
+import {useUserId} from '../utils/user-context-hook';
+import {scheduleItemCollectionNotification} from '../utils/notification';
 
 export const BagScreen = ({navigation, route}) => {
   const itemParam = route.params.item;
@@ -143,13 +144,14 @@ export const BagScreen = ({navigation, route}) => {
           userId={userId}
           state={buttonState}
           orderId={orderId}
+          item={item}
         />
       </View>
     </>
   );
 };
 
-function OrderButton({navigation, itemId, userId, state, orderId}) {
+function OrderButton({navigation, itemId, userId, state, orderId, item}) {
   switch (state) {
     case 'initial':
       return (
@@ -171,6 +173,7 @@ function OrderButton({navigation, itemId, userId, state, orderId}) {
           onPress={() => {
             onSubmitOrder(itemId, userId);
             Vibration.vibrate();
+            scheduleItemCollectionNotification(item);
             navigation.navigate('Orders', {hasNewOrder: true});
           }}
         />

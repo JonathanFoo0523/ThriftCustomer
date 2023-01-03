@@ -2,9 +2,8 @@ import React, {useState, useEffect, useRef} from 'react';
 import {View, FlatList} from 'react-native';
 import {OrderCard} from '../components/organisms/order-card';
 import firestore from '@react-native-firebase/firestore';
-import {useUserId} from '../utils/current-user-context';
+import {useUserId} from '../utils/user-context-hook';
 
-import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import {OrderCardSkeleton} from '../components/organisms/order-card-skeleton';
 import {OrderEmptyScreen} from './orders-empty-screen';
 
@@ -25,7 +24,6 @@ export function OrdersScreen({route}) {
   useEffect(() => {
     return ordersRef.onSnapshot(async querySnapshot => {
       const list = [];
-
       for (let order of querySnapshot.docs) {
         const {status, time, businessId, itemId} = order.data();
         const business = await (await businessRef.doc(businessId).get()).data();
@@ -78,7 +76,8 @@ export function OrdersScreen({route}) {
 
   return isLoading ? (
     <OrdersListPlaceholder />
-  ) : <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+  ) : (
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <FlatList
         ref={flatListRef}
         data={orders}
@@ -91,6 +90,7 @@ export function OrdersScreen({route}) {
         scrollEnabled={orders.length != 0}
       />
     </View>
+  );
 }
 
 const OrdersListPlaceholder = () => (

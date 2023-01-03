@@ -10,14 +10,21 @@ export const UserIdProvider = ({children}) => {
 
   useEffect(() => {
     async function getOrInitUserId() {
-      let temp = await AsyncStorage.getItem('USER_ID');
-      if (temp == null) {
-        temp = uuid.v4();
-        await AsyncStorage.setItem('USER_ID', uuid.v4());
+      try {
+        let temp = await AsyncStorage.getItem('USER_ID');
+        if (temp == null) {
+          console.log('USER_ID not found.');
+          temp = uuid.v4();
+          await AsyncStorage.setItem('USER_ID', temp);
+          console.log('USER_ID generated: ' + temp);
+        } else {
+          console.log('USER_ID Found: ' + temp);
+        }
+        setUserId(temp);
+      } catch (error) {
+        console.error(error);
       }
-      setUserId(temp);
     }
-
     if (!userId) {
       getOrInitUserId();
     }
