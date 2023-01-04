@@ -11,10 +11,12 @@ import LinearGradient from 'react-native-linear-gradient';
 import {useNavigation} from '@react-navigation/native';
 
 import {pickupTimeDescription} from '../../utils/date-time-formater';
+import {normalize} from '../../utils/font-normalize';
 
 export const ItemCard = ({item}) => {
   const navigation = useNavigation();
-  const itemRemaining = item.quantity - item.ordered
+  const itemRemaining = item.quantity - item.ordered;
+
 
   return (
     <TouchableOpacity
@@ -42,7 +44,7 @@ export const ItemCard = ({item}) => {
             <View style={{justifyContent: 'center'}}>
               {!itemRemaining ? (
                 <View style={{backgroundColor: 'darkgray', borderRadius: 15}}>
-                  <Text style={{fontWeight: 'bold', fontSize: 15, padding: 5}}>
+                  <Text style={{fontWeight: 'bold', fontSize: normalize(15), padding: 5}}>
                     Sold Out
                   </Text>
                 </View>
@@ -58,7 +60,10 @@ export const ItemCard = ({item}) => {
         <View style={styles.itemNameTimeContainer}>
           <Text style={styles.itemNameText}>{item.name}</Text>
           <Text style={styles.itemCollectionTimeText}>
-            {pickupTimeDescription(item.collection.from, item.collection.to)}
+            {pickupTimeDescription(
+              item.collection.from.toDate(),
+              item.collection.to.toDate(),
+            )}
           </Text>
         </View>
         <View style={styles.itemPriceContainer}>
@@ -87,12 +92,12 @@ const styles = StyleSheet.create({
   },
   businessCategoryText: {
     color: 'white',
-    fontSize: 15,
+    fontSize: normalize(15),
     fontWeight: '600',
   },
   businessNameText: {
     color: 'white',
-    fontSize: 20,
+    fontSize: normalize(20),
     fontWeight: 'bold',
   },
   itemPriceContainer: {
@@ -102,12 +107,12 @@ const styles = StyleSheet.create({
   },
   itemWorthText: {
     color: 'grey',
-    fontSize: 13,
+    fontSize: normalize(13),
     textDecorationLine: 'line-through',
     textDecorationStyle: 'solid',
   },
   itemPriceText: {
-    fontSize: 17,
+    fontSize: normalize(17),
     fontWeight: 'bold',
   },
   itemInfoContainer: {
@@ -123,12 +128,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   itemNameText: {
-    fontSize: 17,
+    fontSize: normalize(17),
     fontWeight: 'bold',
   },
   itemCollectionTimeText: {
     color: 'grey',
-    fontSize: 17,
+    fontSize: normalize(17),
     fontWeight: '700',
   },
 });

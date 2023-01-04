@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import { normalize } from '../../utils/font-normalize';
 
 export const ItemCardSkeleton = ({item}) => {
   return (
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   itemPriceText: {
-    fontSize: 17,
+    fontSize: normalize(17),
     fontWeight: 'bold',
     flex: 2,
     height: 25,
@@ -58,14 +59,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   itemNameText: {
-    fontSize: 17,
+    fontSize: normalize(17),
     fontWeight: 'bold',
     marginBottom: 5,
     width: '50%',
   },
   itemCollectionTimeText: {
     color: 'grey',
-    fontSize: 17,
+    fontSize: normalize(17),
     fontWeight: '700',
     width: '90%',
   },

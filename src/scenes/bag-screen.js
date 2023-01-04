@@ -3,12 +3,11 @@ import {
   ScrollView,
   Text,
   View,
-  TouchableOpacity,
   Image,
   StyleSheet,
   Vibration,
+  StatusBar,
 } from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MapView, {Marker} from 'react-native-maps';
 import firestore from '@react-native-firebase/firestore';
 
@@ -18,6 +17,8 @@ import {pickupTimeDescription} from '../utils/date-time-formater';
 
 import {useUserId} from '../utils/user-context-hook';
 import {scheduleItemCollectionNotification} from '../utils/notification';
+import {ContactDetailList} from '../components/molecules/contact-detail-list';
+import { normalize } from '../utils/font-normalize';
 
 export const BagScreen = ({navigation, route}) => {
   const itemParam = route.params.item;
@@ -40,8 +41,6 @@ export const BagScreen = ({navigation, route}) => {
     return itemRef.onSnapshot(async itemSnapshot => {
       const item = itemSnapshot.data();
       item.business = await (await businessRef.get()).data();
-      item.collection.from = item.collection.from.toDate();
-      item.collection.to = item.collection.to.toDate();
       item.business.address.coordinate =
         item.business.address.coordinate.toJSON();
 
@@ -61,6 +60,7 @@ export const BagScreen = ({navigation, route}) => {
 
   return (
     <>
+
       <ScrollView automaticallyAdjustContentInsets={true}>
         <Image
           source={{
@@ -88,20 +88,23 @@ export const BagScreen = ({navigation, route}) => {
           <View style={styles.pickupTimeContainer}>
             <Text style={{fontWeight: 'bold'}}>Pickup</Text>
             <Text style={{fontWeight: '500'}}>
-              {pickupTimeDescription(item.collection.from, item.collection.to)}
+              {pickupTimeDescription(
+                item.collection.from.toDate(),
+                item.collection.to.toDate(),
+              )}
             </Text>
           </View>
         </View>
 
         <Section title="Description">
-          <Text style={{fontSize: 15, textAlign: 'justify'}}>
+          <Text style={{fontSize: normalize(15), textAlign: 'justify'}}>
             {item.description}
           </Text>
         </Section>
 
         <Section title="Location">
-          <Text style={{fontSize: 15}}>{item.business.address.line1}</Text>
-          <Text style={{fontSize: 15, paddingBottom: 7}}>
+          <Text style={{fontSize: normalize(15)}}>{item.business.address.line1}</Text>
+          <Text style={{fontSize: normalize(15), paddingBottom: 7}}>
             {item.business.address.line2}
           </Text>
           <MapView
@@ -122,7 +125,7 @@ export const BagScreen = ({navigation, route}) => {
         </Section>
 
         <Section title="Contact">
-          <ContactButton
+          {/* <ContactDetailButton
             value={item.business.contact.primary}
             iconName="phone-outline"
           />
@@ -133,7 +136,8 @@ export const BagScreen = ({navigation, route}) => {
             style={{alignSelf: 'center', width: '95%'}}
           />
 
-          <ContactButton value={item.business.contact.website} iconName="web" />
+          <ContactDetailButton value={item.business.contact.website} iconName="web" /> */}
+          <ContactDetailList contact={item.business.contact} />
         </Section>
       </ScrollView>
 
@@ -230,26 +234,13 @@ function onSubmitOrder(itemId, userId) {
 const Section = ({children, title}) => {
   return (
     <View style={{padding: 15, paddingBottom: 20}}>
-      <Text style={{fontSize: 20, fontWeight: 'bold', paddingBottom: 7}}>
+      <Text style={{fontSize: normalize(20), fontWeight: 'bold', paddingBottom: 7}}>
         {title}
       </Text>
       {children}
     </View>
   );
 };
-
-const ContactButton = ({value, iconName}) => (
-  <TouchableOpacity
-    style={{flexDirection: 'row', alignItems: 'center', padding: 5}}>
-    <MaterialCommunityIcons
-      name={iconName}
-      size={30}
-      color={'#36656F'}
-      style={{paddingRight: 10}}
-    />
-    <Text style={{fontSize: 15}}>{value}</Text>
-  </TouchableOpacity>
-);
 
 const styles = StyleSheet.create({
   coverImage: {
@@ -269,26 +260,26 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   itemNameText: {
-    fontSize: 20,
+    fontSize: normalize(20),
     fontWeight: 'bold',
   },
   locationNameText: {
-    fontSize: 20,
+    fontSize: normalize(20),
     fontWeight: 'bold',
     color: 'grey',
   },
   noAvailableText: {
-    fontSize: 15,
+    fontSize: normalize(15),
     fontWeight: '600',
     color: '#36656F',
   },
   priceText: {
-    fontSize: 22,
+    fontSize: normalize(22),
     fontWeight: 'bold',
   },
   worthText: {
     color: 'grey',
-    fontSize: 14,
+    fontSize: normalize(14),
     textDecorationLine: 'line-through',
     textDecorationStyle: 'solid',
   },

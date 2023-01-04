@@ -6,6 +6,7 @@ import {useUserId} from '../utils/user-context-hook';
 
 import {OrderCardSkeleton} from '../components/organisms/order-card-skeleton';
 import {OrderEmptyScreen} from './orders-empty-screen';
+import {FocusAwareStatusBar} from '../components/atoms/focus-aware-status-bar';
 
 export function OrdersScreen({route}) {
   const ordersRef = firestore()
@@ -74,22 +75,27 @@ export function OrdersScreen({route}) {
     }
   }, [route]);
 
-  return isLoading ? (
-    <OrdersListPlaceholder />
-  ) : (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <FlatList
-        ref={flatListRef}
-        data={orders}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-        style={{flex: 1, width: '100%'}}
-        ListHeaderComponent={isLoadingNewOrder ? OrderCardSkeleton : <></>}
-        ListEmptyComponent={!isLoadingNewOrder ? OrderEmptyScreen : <></>}
-        contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}
-        scrollEnabled={orders.length != 0}
-      />
-    </View>
+  return (
+    <>
+      <FocusAwareStatusBar barStyle="dark-content" animater={true} />
+      {isLoading ? (
+        <OrdersListPlaceholder />
+      ) : (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <FlatList
+            ref={flatListRef}
+            data={orders}
+            renderItem={renderItem}
+            keyExtractor={item => item.id}
+            style={{flex: 1, width: '100%'}}
+            ListHeaderComponent={isLoadingNewOrder ? OrderCardSkeleton : <></>}
+            ListEmptyComponent={!isLoadingNewOrder ? OrderEmptyScreen : <></>}
+            contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}
+            scrollEnabled={orders.length != 0}
+          />
+        </View>
+      )}
+    </>
   );
 }
 

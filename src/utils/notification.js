@@ -8,7 +8,7 @@ export const requestPermission = async () => {
 const OrderIdNotificationIdMap = {};
 
 export const scheduleItemCollectionNotification = async item => {
-  const collectionTime = item.collection.from.getTime();
+  const collectionTime = item.collection.from.toDate().getTime();
   if (collectionTime < Date.now()) {
     console.log('Collection Began: Do not scedhule notification');
     return;

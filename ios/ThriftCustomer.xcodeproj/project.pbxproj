@@ -11,6 +11,7 @@
 		090FEDEB333AFC2EB6823AB8 /* Pods_ThriftCustomer_ThriftCustomerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF3914DDB2F9BC12568E0F88 /* Pods_ThriftCustomer_ThriftCustomerTests.framework */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		57CC3D332965F450007FB390 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		57CDD368296066B800088113 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 57CDD367296066B800088113 /* GoogleService-Info.plist */; };
 		DFFBEB92409A87BDCA467C6F /* Pods_ThriftCustomer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3C3EE7CA8752704599C7827 /* Pods_ThriftCustomer.framework */; };
 /* End PBXBuildFile section */
@@ -285,6 +286,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				57CDD368296066B800088113 /* GoogleService-Info.plist in Resources */,
+				57CC3D332965F450007FB390 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

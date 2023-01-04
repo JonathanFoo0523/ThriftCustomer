@@ -1,5 +1,12 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, Alert} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+  Linking,
+} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MapView, {Marker} from 'react-native-maps';
 
@@ -14,6 +21,9 @@ import {
 
 import firestore from '@react-native-firebase/firestore';
 import {useForceUpdate} from '../../utils/force-update-hook';
+import {useUserId} from '../../utils/user-context-hook';
+import {feedbackEmailUrl} from '../../utils/feedback-email-url';
+import {normalize} from '../../utils/font-normalize';
 
 export const OrderCard = ({order}) => {
   return (
@@ -59,7 +69,9 @@ export const OrderCard = ({order}) => {
             description={order.business.name + '\n' + order.business.contact}
             style={{flex: 1}}
           />
-          <TouchableOpacity style={{alignContent: 'center'}}>
+          <TouchableOpacity
+            style={{alignContent: 'center'}}
+            onPress={() => Linking.openURL('tel:' + order.business.contact)}>
             <MaterialCommunityIcons
               name="phone-outgoing"
               size={27}
@@ -91,6 +103,7 @@ export const OrderCard = ({order}) => {
           orderId={order.id}
           itemId={order.item.id}
           collectionFrom={order.item.from}
+          order={order}
         />
       </View>
     </View>
@@ -104,11 +117,11 @@ const TitleDescription = ({style, title, description}) => {
       paddingBottom: 15,
     },
     titleText: {
-      fontSize: 17,
+      fontSize: normalize(17),
       fontWeight: '500',
     },
     descriptionText: {
-      fontSize: 17,
+      fontSize: normalize(17),
       fontWeight: 'bold',
       color: 'grey',
     },
@@ -122,13 +135,14 @@ const TitleDescription = ({style, title, description}) => {
   );
 };
 
-const OrderActionButton = ({status, orderId, itemId, collectionFrom}) => {
+const OrderActionButton = ({order}) => {
   const forceUpdate = useForceUpdate();
+  const userId = useUserId();
 
-  switch (status) {
+  switch (order.status) {
     case 'O':
     case 'OO':
-      return !timeExceedCollectionTimeBy(collectionFrom, 2) ? (
+      return !timeExceedCollectionTimeBy(order.item.from, 2) ? (
         <PressLoadingButton
           text="Cancel Order"
           size={17}
@@ -136,7 +150,7 @@ const OrderActionButton = ({status, orderId, itemId, collectionFrom}) => {
           style={{width: '60%'}}
           onPress={async () => {
             try {
-              await onCancelOrder(orderId, itemId);
+              await onCancelOrder(order.id, order.item.id);
             } catch (e) {
               Alert.alert(e);
               forceUpdate();
@@ -165,6 +179,7 @@ const OrderActionButton = ({status, orderId, itemId, collectionFrom}) => {
           color="#36656F"
           style={{width: '60%'}}
           role="secondary"
+          onPress={() => Linking.openURL(feedbackEmailUrl(order, userId))}
         />
       );
     case 'OOO':
@@ -174,7 +189,7 @@ const OrderActionButton = ({status, orderId, itemId, collectionFrom}) => {
           size={17}
           color="#36656F"
           style={{width: '60%'}}
-          onPress={() => onPickupOrder(orderId)}
+          onPress={() => onPickupOrder(order.id)}
         />
       );
   }
@@ -255,16 +270,16 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
   },
   headerTitleText: {
-    fontSize: 17,
+    fontSize: normalize(17),
     fontWeight: '500',
   },
   orderIDText: {
-    fontSize: 20,
+    fontSize: normalize(20),
     fontWeight: 'bold',
     color: '#36656F',
   },
   orderTimeText: {
-    fontSize: 15,
+    fontSize: normalize(15),
     fontWeight: '400',
     paddingBottom: 10,
     color: 'grey',
@@ -278,7 +293,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   statusDescriptionText: {
-    fontSize: 20,
+    fontSize: normalize(20),
     fontWeight: 'bold',
     paddingBottom: 10,
   },

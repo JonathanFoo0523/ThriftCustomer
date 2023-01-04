@@ -1,4 +1,5 @@
 import React, {useEffect} from 'react';
+import { StatusBar } from 'react-native';
 import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -62,7 +63,6 @@ const App = () => {
             }}
             component={BagsNavigator}
           />
-
           <Tab.Screen
             name="Orders"
             component={OrdersScreen}

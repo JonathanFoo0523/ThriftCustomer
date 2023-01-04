@@ -4,6 +4,7 @@ import {ItemCard} from '../components/organisms/item-card';
 import firestore from '@react-native-firebase/firestore';
 
 import {ItemCardSkeleton} from '../components/organisms/item-card-skeleton';
+import {FocusAwareStatusBar} from '../components/atoms/focus-aware-status-bar';
 
 export function BagsScreen() {
   const businessRef = firestore().collection('business');
@@ -30,11 +31,8 @@ export function BagsScreen() {
           worth,
           quantity,
           ordered,
-          collection: {
-            from: collection.from.toDate(),
-            to: collection.to.toDate(),
-          },
-          businessId: businessId,
+          collection,
+          businessId,
           business: business,
         });
       }
@@ -44,17 +42,22 @@ export function BagsScreen() {
     });
   }, []);
 
-  return isLoading ? (
-    <BagsListPlaceholder />
-  ) : (
-    <FlatList
-      data={items}
-      renderItem={renderItem}
-      keyExtractor={item => item.id}
-      style={{flex: 1, width: '100%'}}
-      contentContainerStyle={{justifyContent: 'center'}}
-      contentInsetAdjustmentBehavior="automatic"
-    />
+  return (
+    <>
+      <FocusAwareStatusBar barStyle="light-content" animater={true} />
+      {isLoading ? (
+        <BagsListPlaceholder />
+      ) : (
+        <FlatList
+          data={items}
+          renderItem={renderItem}
+          keyExtractor={item => item.id}
+          style={{flex: 1, width: '100%'}}
+          contentContainerStyle={{justifyContent: 'center'}}
+          contentInsetAdjustmentBehavior="automatic"
+        />
+      )}
+    </>
   );
 }
 
