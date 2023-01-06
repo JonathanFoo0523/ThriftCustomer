@@ -2,6 +2,8 @@
 
 ThriftCustomer is a prototype app which helps local businesses sell their excess or unsold food at discounted prices at the end of the day. This helps reduce food waste by giving the food a new home instead of it going to waste. Customers can browse the app for discounted food deals, and can purchase the food directly through the app. This is a win-win scenario for both businesses and customers, as the businesses are able to recoup some of their losses from unsold food and customers are able to get a good deal on fresh food. Overall, ThriftCustomer helps to reduce food waste and make it easier for people to access fresh, affordable food.
 
+See [ThriftCloudFunction](https://github.com/JonathanFoo0523/ThriftCloudFunctions) for backend support of the application.
+
 | Home And Order Pages     |  Order Flow  | Local Notification |
 :-------------------------:|:-------------------------:|:-------------------------:
 <img src="https://github.com/JonathanFoo0523/ThriftCustomer/blob/main/HomeAndOrder.gif" alt="drawing" width="250"/> | <img src="https://github.com/JonathanFoo0523/ThriftCustomer/blob/main/OrderFlow.gif" alt="drawing" width="250"/> | <img src="https://github.com/JonathanFoo0523/ThriftCustomer/blob/main/LocalNotification.png" alt="drawing" width="250"/> | 
