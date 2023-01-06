@@ -20,7 +20,7 @@ As the project grow bigger, we will adopt test-driven development to reduce bugs
 
 ## Drawback
 
-Currently, the app doesn't support user signin/signup. Instead, the first time an user launches the app, it generates a random UUID which is stored locally on the device. The UUID is submitted along with every order the user made. When users close and relauch the app, the locally-stored UUID will be retrived to get orders history of the user. The problem with the approach is that the UUID will be cleared when the app is deleted & reinstalled; and user has no way to access their orders from other devices.
+Currently, the app doesn't support user signin/signup. Instead, when the user launches the app for the first time, it generates a random UUID which is stored locally on the device. The UUID is submitted along with every order the user made. When users close and relauch the app, the locally-stored UUID will be retrived to get orders history of the user. The problem with the approach is that the UUID will be cleared when the app is deleted & reinstalled; and user has no way to access their orders from other devices.
 
 ## TODO
 * Push notification when business accepts/rejects an order
