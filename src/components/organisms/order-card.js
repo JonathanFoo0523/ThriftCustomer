@@ -147,7 +147,7 @@ const OrderActionButton = ({order}) => {
           text="Cancel Order"
           size={17}
           color="#E54B4B"
-          style={{width: '60%'}}
+          style={{width: '70%'}}
           onPress={async () => {
             try {
               await onCancelOrder(order.id, order.item.id);
@@ -163,7 +163,7 @@ const OrderActionButton = ({order}) => {
           size={17}
           color="#E54B4B50"
           activeOpacity={1.0}
-          style={{width: '60%'}}
+          style={{width: '70%'}}
           onPress={() =>
             Alert.alert('Cannot cancel order 2 hours before collection start.')
           }
@@ -177,18 +177,18 @@ const OrderActionButton = ({order}) => {
           text="Give Feedback"
           size={17}
           color="#36656F"
-          style={{width: '60%'}}
+          style={{width: '70%'}}
           role="secondary"
           onPress={() => Linking.openURL(feedbackEmailUrl(order, userId))}
         />
       );
     case 'OOO':
       return (
-        <Button
+        <PressLoadingButton
           text="Arrived For Pickup"
           size={17}
           color="#36656F"
-          style={{width: '60%'}}
+          style={{width: '70%'}}
           onPress={() => onPickupOrder(order.id)}
         />
       );

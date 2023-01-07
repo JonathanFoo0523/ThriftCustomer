@@ -12,6 +12,8 @@ export const scheduleItemCollectionNotification = async item => {
   if (collectionTime < Date.now()) {
     console.log('Collection Began: Do not scedhule notification');
     return;
+  } else {
+    console.log('Scheduling Notification')
   }
 
   const trigger = {
@@ -29,7 +31,7 @@ export const scheduleItemCollectionNotification = async item => {
         ' at ' +
         item.business.name +
         ' before ' +
-        amPmTimeDescription(item.collection.to),
+        amPmTimeDescription(item.collection.to.toDate()),
     },
     trigger,
   );
