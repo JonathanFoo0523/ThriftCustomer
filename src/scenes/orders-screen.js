@@ -43,7 +43,11 @@ export function OrdersScreen({route}) {
           business: {
             name: business.name,
             contact: business.contact.primary,
-            location: business.address.coordinate.toJSON(),
+            address: {
+              coordinate: business.address.coordinate.toJSON(),
+              line1: business.address.line1,
+              line2: business.address.line2,
+            },
           },
         });
       }

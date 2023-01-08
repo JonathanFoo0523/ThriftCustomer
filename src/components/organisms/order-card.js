@@ -8,7 +8,6 @@ import {
   Linking,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import MapView, {Marker} from 'react-native-maps';
 
 import {OrderStatusProgress} from '../molecules/order-status-progress';
 import {Button} from '../atoms/button';
@@ -24,6 +23,7 @@ import {useForceUpdate} from '../../utils/force-update-hook';
 import {useUserId} from '../../utils/user-context-hook';
 import {feedbackEmailUrl} from '../../utils/feedback-email-url';
 import {normalize} from '../../utils/font-normalize';
+import {MapViewWithLink} from '../molecules/map-view-with-link';
 
 export const OrderCard = ({order}) => {
   return (
@@ -80,21 +80,7 @@ export const OrderCard = ({order}) => {
           </TouchableOpacity>
         </View>
 
-        <MapView
-          style={{height: 150, width: '100%', borderRadius: 10}}
-          initialRegion={{
-            latitude: order.business.location.latitude,
-            longitude: order.business.location.longitude,
-            latitudeDelta: 0.0025,
-            longitudeDelta: 0.0025,
-          }}>
-          <Marker
-            coordinate={{
-              latitude: order.business.location.latitude,
-              longitude: order.business.location.longitude,
-            }}
-          />
-        </MapView>
+        <MapViewWithLink address={order.business.address} height={150} />
       </View>
 
       <View style={{alignItems: 'center'}}>

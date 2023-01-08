@@ -8,17 +8,16 @@ import {
   Vibration,
   StatusBar,
 } from 'react-native';
-import MapView, {Marker} from 'react-native-maps';
 import firestore from '@react-native-firebase/firestore';
+import {MapViewWithLink} from '../components/molecules/map-view-with-link';
 
-import {Line} from '../components/atoms/line';
 import {Button} from '../components/atoms/button';
 import {pickupTimeDescription} from '../utils/date-time-formater';
 
 import {useUserId} from '../utils/user-context-hook';
 import {scheduleItemCollectionNotification} from '../utils/notification';
 import {ContactDetailList} from '../components/molecules/contact-detail-list';
-import { normalize } from '../utils/font-normalize';
+import {normalize} from '../utils/font-normalize';
 
 export const BagScreen = ({navigation, route}) => {
   const itemParam = route.params.item;
@@ -45,12 +44,14 @@ export const BagScreen = ({navigation, route}) => {
         item.business.address.coordinate.toJSON();
 
       const userOrder = await orderRef.get();
-      
+
       if (userOrder.size !== 0 && userOrder.docs[0].data().status !== 'OX') {
         setButtonState('ordered');
         setOrderId(userOrder.docs[0].id);
       } else if (item.quantity - item.ordered === 0) {
         setButtonState('soldOut');
+      } else if (item.collection.to.toDate() < new Date()) {
+        setButtonState('collectionEnded');
       } else {
         setButtonState('available');
       }
@@ -60,7 +61,6 @@ export const BagScreen = ({navigation, route}) => {
 
   return (
     <>
-
       <ScrollView automaticallyAdjustContentInsets={true}>
         <Image
           source={{
@@ -103,11 +103,13 @@ export const BagScreen = ({navigation, route}) => {
         </Section>
 
         <Section title="Location">
-          <Text style={{fontSize: normalize(15)}}>{item.business.address.line1}</Text>
+          <Text style={{fontSize: normalize(15)}}>
+            {item.business.address.line1}
+          </Text>
           <Text style={{fontSize: normalize(15), paddingBottom: 7}}>
             {item.business.address.line2}
           </Text>
-          <MapView
+          {/* <MapView
             style={{height: 200, width: '100%', borderRadius: 10}}
             initialRegion={{
               latitude: item.business.address.coordinate.latitude,
@@ -121,7 +123,8 @@ export const BagScreen = ({navigation, route}) => {
                 longitude: item.business.address.coordinate.longitude,
               }}
             />
-          </MapView>
+          </MapView> */}
+          <MapViewWithLink address={item.business.address} height={200} />
         </Section>
 
         <Section title="Contact">
@@ -194,11 +197,12 @@ function OrderButton({navigation, itemId, userId, state, orderId, item}) {
         />
       );
     case 'soldOut':
+    case 'collectionEnded':
       return (
         <Button
           color="#36656F"
           size={18}
-          text="Item Sold Out"
+          text="Item Not Available"
           style={{width: '100%'}}
           role="disabled"
         />
@@ -234,7 +238,8 @@ function onSubmitOrder(itemId, userId) {
 const Section = ({children, title}) => {
   return (
     <View style={{padding: 15, paddingBottom: 20}}>
-      <Text style={{fontSize: normalize(20), fontWeight: 'bold', paddingBottom: 7}}>
+      <Text
+        style={{fontSize: normalize(20), fontWeight: 'bold', paddingBottom: 7}}>
         {title}
       </Text>
       {children}

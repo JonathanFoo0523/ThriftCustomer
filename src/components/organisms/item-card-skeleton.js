@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
-import { normalize } from '../../utils/font-normalize';
+import {normalize} from '../../utils/font-normalize';
 
 export const ItemCardSkeleton = ({item}) => {
   return (

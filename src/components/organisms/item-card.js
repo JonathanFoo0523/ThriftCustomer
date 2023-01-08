@@ -17,7 +17,6 @@ export const ItemCard = ({item}) => {
   const navigation = useNavigation();
   const itemRemaining = item.quantity - item.ordered;
 
-
   return (
     <TouchableOpacity
       style={[styles.container,{opacity: itemRemaining ? 1.0 : 0.6}]}
