@@ -12,7 +12,7 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		57CC3D332965F450007FB390 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		57CDD368296066B800088113 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 57CDD367296066B800088113 /* GoogleService-Info.plist */; };
+		57CC3D44296B8AB4007FB390 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 57CC3D43296B8AB4007FB390 /* GoogleService-Info.plist */; };
 		DFFBEB92409A87BDCA467C6F /* Pods_ThriftCustomer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3C3EE7CA8752704599C7827 /* Pods_ThriftCustomer.framework */; };
 /* End PBXBuildFile section */
 
@@ -54,7 +54,8 @@
 		57C64160295E6181007551E3 /* Feather.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Feather.ttf; sourceTree = "<group>"; };
 		57C64161295E6181007551E3 /* Octicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Octicons.ttf; sourceTree = "<group>"; };
 		57C64162295E6181007551E3 /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Ionicons.ttf; sourceTree = "<group>"; };
-		57CDD367296066B800088113 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		57CC3D40296B7AC1007FB390 /* ThriftCustomer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = ThriftCustomer.entitlements; path = ThriftCustomer/ThriftCustomer.entitlements; sourceTree = "<group>"; };
+		57CC3D43296B8AB4007FB390 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = ThriftCustomer/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		88793E614FCFA68E1098DE21 /* Pods-ThriftCustomer-ThriftCustomerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ThriftCustomer-ThriftCustomerTests.debug.xcconfig"; path = "Target Support Files/Pods-ThriftCustomer-ThriftCustomerTests/Pods-ThriftCustomer-ThriftCustomerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		90D0CA026607761F992E03CB /* Pods-ThriftCustomer-ThriftCustomerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ThriftCustomer-ThriftCustomerTests.release.xcconfig"; path = "Target Support Files/Pods-ThriftCustomer-ThriftCustomerTests/Pods-ThriftCustomer-ThriftCustomerTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -103,7 +104,7 @@
 		13B07FAE1A68108700A75B9A /* ThriftCustomer */ = {
 			isa = PBXGroup;
 			children = (
-				57CDD367296066B800088113 /* GoogleService-Info.plist */,
+				57CC3D40296B7AC1007FB390 /* ThriftCustomer.entitlements */,
 				57C6414F295E612B007551E3 /* Fonts */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
@@ -158,6 +159,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				57CC3D43296B8AB4007FB390 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* ThriftCustomer */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* ThriftCustomerTests */,
@@ -285,8 +287,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				57CDD368296066B800088113 /* GoogleService-Info.plist in Resources */,
 				57CC3D332965F450007FB390 /* Images.xcassets in Resources */,
+				57CC3D44296B8AB4007FB390 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -541,6 +543,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = ThriftCustomer/ThriftCustomer.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = X4RJRYD8N3;
 				ENABLE_BITCODE = NO;
@@ -569,6 +572,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = ThriftCustomer/ThriftCustomer.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = X4RJRYD8N3;
 				INFOPLIST_FILE = ThriftCustomer/Info.plist;

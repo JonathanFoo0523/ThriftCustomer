@@ -27,7 +27,7 @@ export const MapViewWithLink = ({address, height}) => {
         onPress={() =>
           Linking.openURL(
             encodeURI(
-              `http://maps.apple.com/?q=${address.line1},${address.line2}?ll=${address.coordinate.latitude},${address.coordinate.longitude}`,
+              `http://maps.apple.com/?q=${address.line1}?ll=${address.coordinate.latitude},${address.coordinate.longitude}`,
             ),
           )
         }>

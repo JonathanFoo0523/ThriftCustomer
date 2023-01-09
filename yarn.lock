@@ -2078,6 +2078,11 @@
   "resolved" "https://registry.npmjs.org/@react-native-firebase/firestore/-/firestore-16.5.0.tgz"
   "version" "16.5.0"
 
+"@react-native-firebase/messaging@^16.5.0":
+  "integrity" "sha512-p2dQ59BhGqQUNuJEjbnMxwSoPh/0c5DjBY6BbVoP6G87XDEU6XqHAU2HI4hZXJvUxXnpf1RhbN4XxTXMH+BvAg=="
+  "resolved" "https://registry.npmjs.org/@react-native-firebase/messaging/-/messaging-16.5.0.tgz"
+  "version" "16.5.0"
+
 "@react-native-masked-view/masked-view@^0.2.8":
   "integrity" "sha512-+1holBPDF1yi/y0uc1WB6lA5tSNHhM7PpTMapT3ypvSnKQ9+C6sy/zfjxNxRA/llBQ1Ci6f94EaK56UCKs5lTA=="
   "resolved" "https://registry.npmjs.org/@react-native-masked-view/masked-view/-/masked-view-0.2.8.tgz"

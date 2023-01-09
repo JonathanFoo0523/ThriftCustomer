@@ -6,7 +6,6 @@ import {
   Image,
   StyleSheet,
   Vibration,
-  StatusBar,
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import {MapViewWithLink} from '../components/molecules/map-view-with-link';
@@ -15,9 +14,10 @@ import {Button} from '../components/atoms/button';
 import {pickupTimeDescription} from '../utils/date-time-formater';
 
 import {useUserId} from '../utils/user-context-hook';
-import {scheduleItemCollectionNotification} from '../utils/notification';
 import {ContactDetailList} from '../components/molecules/contact-detail-list';
 import {normalize} from '../utils/font-normalize';
+
+import messaging from '@react-native-firebase/messaging';
 
 export const BagScreen = ({navigation, route}) => {
   const itemParam = route.params.item;
@@ -58,6 +58,19 @@ export const BagScreen = ({navigation, route}) => {
       setItem(item);
     });
   }, []);
+
+  useEffect(() => {
+    const delay = item.collection.to.toDate() - new Date();
+    if (delay < 0) {
+      return;
+    }
+    const timer = setTimeout(() => {
+      setButtonState('collectionEnded');
+      console.log(delay);
+    }, delay);
+
+    return () => clearTimeout(timer);
+  });
 
   return (
     <>
@@ -109,37 +122,10 @@ export const BagScreen = ({navigation, route}) => {
           <Text style={{fontSize: normalize(15), paddingBottom: 7}}>
             {item.business.address.line2}
           </Text>
-          {/* <MapView
-            style={{height: 200, width: '100%', borderRadius: 10}}
-            initialRegion={{
-              latitude: item.business.address.coordinate.latitude,
-              longitude: item.business.address.coordinate.longitude,
-              latitudeDelta: 0.0025,
-              longitudeDelta: 0.0025,
-            }}>
-            <Marker
-              coordinate={{
-                latitude: item.business.address.coordinate.latitude,
-                longitude: item.business.address.coordinate.longitude,
-              }}
-            />
-          </MapView> */}
           <MapViewWithLink address={item.business.address} height={200} />
         </Section>
 
         <Section title="Contact">
-          {/* <ContactDetailButton
-            value={item.business.contact.primary}
-            iconName="phone-outline"
-          />
-
-          <Line
-            thickness={1}
-            color="lightgrey"
-            style={{alignSelf: 'center', width: '95%'}}
-          />
-
-          <ContactDetailButton value={item.business.contact.website} iconName="web" /> */}
           <ContactDetailList contact={item.business.contact} />
         </Section>
       </ScrollView>
@@ -180,7 +166,7 @@ function OrderButton({navigation, itemId, userId, state, orderId, item}) {
           onPress={() => {
             onSubmitOrder(itemId, userId);
             Vibration.vibrate();
-            scheduleItemCollectionNotification(item);
+            // scheduleItemCollectionNotification(item);
             navigation.navigate('Orders', {hasNewOrder: true});
           }}
         />
@@ -225,12 +211,15 @@ function onSubmitOrder(itemId, userId) {
       ordered: item.ordered + 1,
     });
 
+    const token = await messaging().getToken();
+
     await transaction.set(newOrderRef, {
       itemId: itemId,
       businessId: item.businessId,
       status: 'O',
       userId: userId,
       time: firestore.FieldValue.serverTimestamp(),
+      fcmToken: token,
     });
   });
 }

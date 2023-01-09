@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import { StatusBar } from 'react-native';
+import {StatusBar, Alert} from 'react-native';
 import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -10,6 +10,9 @@ import {UserIdProvider} from './src/utils/user-context-hook';
 import {BagsNavigator} from './src/navigations/bags-navigator';
 
 import {requestPermission} from './src/utils/notification';
+
+import messaging from '@react-native-firebase/messaging';
+import notifee, {EventType} from '@notifee/react-native';
 
 const MyTheme = {
   ...DefaultTheme,
@@ -23,9 +26,47 @@ const MyTheme = {
 const Tab = createBottomTabNavigator();
 
 const App = () => {
+  // Reset Badge count when app is opened
   useEffect(() => {
-    requestPermission();
+    notifee.setBadgeCount(0);
+  }, []);
+
+  // request permission when app launcesd
+  useEffect(() => {
+    async function requestUserPermission() {
+      let authStatus = await messaging().hasPermission();
+
+      if (authStatus !== messaging.AuthorizationStatus.AUTHORIZED) {
+        authStatus = await messaging().requestPermission({
+          alert: true,
+          announcement: false,
+          badge: true,
+          carPlay: false,
+          provisional: false,
+          sound: true,
+        });
+      }
+      const token = await messaging().getToken();
+      console.log(token);
+    }
+    requestUserPermission();
   });
+
+  // Listen For foreground notificatios
+  useEffect(() => {
+    async function displayNotification(notification) {
+      await notifee.displayNotification({
+        title: notification.title,
+        body: notification.body,
+      });
+    }
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      console.log('A new FCM message arrived!', JSON.stringify(remoteMessage));
+      displayNotification(remoteMessage.notification);
+    });
+
+    return unsubscribe;
+  }, []);
 
   return (
     <UserIdProvider>
